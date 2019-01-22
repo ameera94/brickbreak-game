@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   let paddleHeight = 50;
-  let paddleWidth = 150;
+  let paddleWidth = 250;
   let paddleX = (innerWidth - paddleWidth) / 2;
 
   let rightKey = true;
@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+
+
   document.addEventListener("keydown", keyDownFunc, false);
 
   function keyDownFunc(e) {
@@ -87,6 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
       leftKey = true;
       console.log("TRUE");
     }
+
+    if (rightKey && paddleX < innerWidth - paddleWidth) {
+      paddleX += 20;
+    } else if (leftKey && paddleX > 0) {
+      paddleX -= 20;
+    }
+
   }
 
   document.addEventListener("keyup", keyUpFunc, false);

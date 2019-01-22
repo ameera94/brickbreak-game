@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  let paddleHeight = 50;
-  let paddleWidth = 250;
+  let paddleHeight = 30;
+  let paddleWidth = 300;
   let paddleX = (innerWidth - paddleWidth) / 2;
 
   let rightKey = true;
@@ -69,15 +69,22 @@ document.addEventListener("DOMContentLoaded", function () {
       dx = -dx;
     }
 
-    if (y + radius > innerHeight || y - radius < 0) {
+    if (y - radius < 0) {
       dy = -dy;
+    } else if (y + radius + paddleHeight > innerHeight) {
+      if (x > paddleX && x < paddleX + paddleWidth) {
+        dy = -dy;
+      } else {
+        console.log("Game over!");
+        document.location.reload();
+      }
     }
+
     x += dx;
     y += dy;
 
 
   }
-
 
 
   document.addEventListener("keydown", keyDownFunc, false);
@@ -91,9 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (rightKey && paddleX < innerWidth - paddleWidth) {
-      paddleX += 20;
+      paddleX += 25;
     } else if (leftKey && paddleX > 0) {
-      paddleX -= 20;
+      paddleX -= 25;
     }
 
   }
@@ -109,28 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-
   setInterval(animate, 8);
 
 
-  // let paddleHeight = 30;
-  // let paddleWidth = 100;
-  // let paddleX = (innerWidth - paddleWidth) / 2;
-  // ==PADDLE==
-  // function drawPaddle() {
-  // c.beginPath();
-  // c.fillStyle = "orange";
-  // c.fillRect(paddleX, (innerHeight - paddleHeight), paddleWidth, paddleHeight);
-  // c.fillRect(200, 300, 70, 20);
-  // c.fill();
-  // c.closePath();
-
-
-  // drawPaddle();
-
-
   animate();
-
-
 });

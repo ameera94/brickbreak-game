@@ -4,47 +4,37 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-
   const c = canvas.getContext('2d');
 
-  // c.fillStyle = "pink";
-  // c.fillRect(100, 100, 100, 100);
+  //===Paddle variables===
 
-
-
-  let paddleHeight = 30;
+  let paddleHeight = 20;
   let paddleWidth = 300;
-  let paddleX = (innerWidth - paddleWidth) / 2;
+  let paddleX = ((innerWidth - paddleWidth) / 2);
 
   let rightKey = true;
   let leftKey = true;
 
-  //===Ball=== 
+  //===Ball variables===  
+
+
   let x = Math.random() * innerWidth;
-  let dx = 4;
-  let radius = 30;
+  let dx = 5;
+  let radius = 15;
   let y = Math.random() * innerHeight;
-  let dy = 4;
+  let dy = 5;
 
-  // function animate() {
-  //   requestAnimationFrame(animate);
-  //   // c.clearRect(0, 0, innerWidth, innerHeight);
-  //   c.beginPath();
-  //   c.arc(x, y, radius, 0, Math.PI * 2, false);
-  //   c.fillStyle = "yellow";
-  //   c.fill();
 
-  //   if (x + radius > innerWidth || x - radius < 0) {
-  //     dx = -dx;
-  //   }
+  //===Brick variables===
+  let brickRows = 3;
+  let brickCols = 6;
+  let brickWidth = 120;
+  let brickHeight = 30;
+  let brickPadding = 20;
+  let brickTop = 30;
+  let brickLeft = innerHeight / 2;
 
-  //   if (y + radius > innerHeight || y - radius < 0) {
-  //     dy = -dy;
-  //   }
-  //   x += dx;
-  //   y += dy;
-
-  // }
+  //===Ball function===
 
   function createBall() {
     c.beginPath();
@@ -53,17 +43,51 @@ document.addEventListener("DOMContentLoaded", function () {
     c.fill();
   }
 
+  //===Paddle function===
+
   function createPaddle() {
     c.beginPath();
     c.fillStyle = "orange";
-    c.fillRect(paddleX, (innerHeight - paddleHeight), paddleWidth, paddleHeight);
-    c.fill();
+    c.fillRect(paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
   }
+
+
+  //Create bricks array
+  let bricks = [];
+  for (let col = 0; col < brickCols; col++) {
+    bricks[col] = [];
+    for (let r = 0; r < brickRows; r++) {
+      bricks[col][r] = { x: 0, y: 0 };
+    }
+  }
+
+
+
+  //===Create bricks===
+
+  function createBricks() {
+    for (let col = 0; col < brickCols; col++) {
+      for (let r = 0; r < brickRows; r++) {
+        let brickX = (col * (brickWidth + brickPadding)) + brickLeft;
+        let brickY = (r * (brickHeight + brickPadding)) + brickTop;
+        bricks[col][r].x = brickX;
+        bricks[col][r].y = brickY;
+        c.beginPath();
+        c.fillRect(brickX, brickY, brickWidth, brickHeight);
+      }
+    }
+  }
+
+
+
+  //===Animate all  function===
 
   function animate() {
     c.clearRect(0, 0, innerWidth, innerHeight);
+    createBricks();
     createBall();
     createPaddle();
+
 
     if (x + radius > innerWidth || x - radius < 0) {
       dx = -dx;
@@ -71,10 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (y - radius < 0) {
       dy = -dy;
-    } else if (y + radius + paddleHeight > innerHeight) {
+    } else if (y + radius + (paddleHeight + 20) > innerHeight) {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy = -dy;
       } else {
+        //Add lost a life alert
+        //Add counter function for lives.
         console.log("Game over!");
         document.location.reload();
       }
@@ -83,9 +109,9 @@ document.addEventListener("DOMContentLoaded", function () {
     x += dx;
     y += dy;
 
-
   }
 
+  //===Keyboard controls function===
 
   document.addEventListener("keydown", keyDownFunc, false);
 
@@ -94,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
       rightKey = true;
     } else if (e.key === "ArrowLeft") {
       leftKey = true;
-      console.log("TRUE");
     }
 
     if (rightKey && paddleX < innerWidth - paddleWidth) {
@@ -102,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (leftKey && paddleX > 0) {
       paddleX -= 25;
     }
-
   }
 
   document.addEventListener("keyup", keyUpFunc, false);
@@ -112,12 +136,10 @@ document.addEventListener("DOMContentLoaded", function () {
       rightKey = false;
     } else if (e.key === "ArrowLeft") {
       leftKey = false;
-      console.log("FALSE")
     }
   }
 
-  setInterval(animate, 8);
-
+  setInterval(animate, 10);
 
   animate();
 });

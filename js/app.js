@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   //===Brick variables===
-  let brickRows = 3;
-  let brickCols = 6;
+  let brickRows = 4;
+  let brickCols = 10;
   let brickWidth = 120;
   let brickHeight = 30;
   let brickPadding = 20;
-  let brickTop = 30;
-  let brickLeft = innerHeight / 2;
+  let brickTop = 20;
+  let brickLeft = 50;
 
   //===Ball function===
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let col = 0; col < brickCols; col++) {
     bricks[col] = [];
     for (let r = 0; r < brickRows; r++) {
-      bricks[col][r] = { x: 0, y: 0 };
+      bricks[col][r] = { x: 0, y: 0, value: 1 };
     }
   }
 
@@ -68,17 +68,37 @@ document.addEventListener("DOMContentLoaded", function () {
   function createBricks() {
     for (let col = 0; col < brickCols; col++) {
       for (let r = 0; r < brickRows; r++) {
-        let brickX = (col * (brickWidth + brickPadding)) + brickLeft;
-        let brickY = (r * (brickHeight + brickPadding)) + brickTop;
-        bricks[col][r].x = brickX;
-        bricks[col][r].y = brickY;
-        c.beginPath();
-        c.fillRect(brickX, brickY, brickWidth, brickHeight);
+        if (bricks[col][r].value >= 1) {
+          let brickX = (col * (brickWidth + brickPadding)) + brickLeft;
+          let brickY = (r * (brickHeight + brickPadding)) + brickTop;
+          bricks[col][r].x = brickX;
+          bricks[col][r].y = brickY;
+
+          c.beginPath();
+          if (col % 2 === 0) {
+            c.fillStyle = "black";
+            value = "2";
+          } else {
+            c.fillStyle = "red";
+          }
+          c.fillRect(brickX, brickY, brickWidth, brickHeight);
+        }
       }
     }
   }
 
 
+  function brickCollision() {
+    for (let col = 0; col < brickCols; col++) {
+      for (let r = 0; r < brickRows; r++) {
+        let bk = bricks[col][r];
+        if (x + radius > bk.x && x + radius < bk.x + brickWidth && y + radius > bk.y && y + radius < bk.y + brickHeight) {
+          dy = -dy;
+          bricks[col][r].value -= 1;
+        }
+      }
+    }
+  }
 
   //===Animate all  function===
 
@@ -87,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     createBricks();
     createBall();
     createPaddle();
+    brickCollision();
 
 
     if (x + radius > innerWidth || x - radius < 0) {
@@ -110,6 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
     y += dy;
 
   }
+
+
+
 
   //===Keyboard controls function===
 
@@ -138,6 +162,15 @@ document.addEventListener("DOMContentLoaded", function () {
       leftKey = false;
     }
   }
+
+  document.addEventListener("mousemove", mouseMovePaddle, false);
+
+  function mouseMovePaddle(e) {
+    if (e.clientX > 0 && e.clientX < innerWidth) {
+      paddleX = e.clientX - paddleWidth / 2;
+    }
+  }
+
 
   setInterval(animate, 10);
 

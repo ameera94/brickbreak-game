@@ -18,21 +18,24 @@ document.addEventListener("DOMContentLoaded", function () {
   //===Ball variables===  
 
 
-  let x = Math.random() * innerWidth;
+  let x = paddleX / 2;
   let dx = 5;
   let radius = 15;
-  let y = Math.random() * innerHeight;
+  let y = innerHeight - 400;
   let dy = 5;
 
+  let score = 0;
+  let livesCount = 3;
 
   //===Brick variables===
   let brickRows = 4;
   let brickCols = 10;
   let brickWidth = 120;
   let brickHeight = 30;
-  let brickPadding = 20;
-  let brickTop = 20;
-  let brickLeft = 50;
+  let brickPadding = 10;
+  let brickTop = 5;
+  let brickLeft = 100;
+
 
   //===Ball function===
 
@@ -62,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-
   //===Create bricks===
 
   function createBricks() {
@@ -76,10 +78,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           c.beginPath();
           if (col % 2 === 0) {
-            c.fillStyle = "black";
-            value = "2";
+            c.fillStyle = "#D33300";
           } else {
-            c.fillStyle = "red";
+            c.fillStyle = "#F78A6B";
           }
           c.fillRect(brickX, brickY, brickWidth, brickHeight);
         }
@@ -92,22 +93,37 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let col = 0; col < brickCols; col++) {
       for (let r = 0; r < brickRows; r++) {
         let bk = bricks[col][r];
-        if (x + radius > bk.x && x + radius < bk.x + brickWidth && y + radius > bk.y && y + radius < bk.y + brickHeight) {
+        if (x > radius + bk.x && x < bk.x + radius + brickWidth && y > bk.y + radius && y < bk.y + radius + brickHeight && bricks[col][r].value >= 1) {
           dy = -dy;
-          bricks[col][r].value -= 1;
+          bricks[col][r].value--;
+          score++;
+        }
+        if (score === brickCols * brickRows) {
+          c.clearRect(0, 0, innerWidth, innerHeight);
+          c.fillText("You win!", innerWidth / 2, innerHeight / 2);
+          animate() = false;
         }
       }
     }
+  }
+
+
+  function scoreBoard() {
+    c.fillText(`Score: ${score}`, 20, 25, 200);
   }
 
   //===Animate all  function===
 
   function animate() {
     c.clearRect(0, 0, innerWidth, innerHeight);
+    scoreBoard();
     createBricks();
     createBall();
     createPaddle();
     brickCollision();
+
+
+
 
 
     if (x + radius > innerWidth || x - radius < 0) {
@@ -120,8 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy = -dy;
       } else {
-        //Add lost a life alert
-        //Add counter function for lives.
+        livesCount--;
+      }
+      if (livesCount === 0) {
         console.log("Game over!");
         document.location.reload();
       }

@@ -17,12 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //===Ball variables===  
 
-
-  let x = paddleX / 2;
-  let dx = 5;
+  let x = paddleX + (paddleWidth / 2);
+  let dx = 3;
   let radius = 15;
-  let y = innerHeight - 400;
-  let dy = 5;
+  let y = innerHeight - 55;
+  let dy = 3;
 
   let score = 0;
   let livesCount = 3;
@@ -41,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function createBall() {
     c.beginPath();
+    //c.moveTo(innerHeight - 400, paddleX / 2);
     c.arc(x, y, radius, 0, Math.PI * 2, false);
     c.fillStyle = "yellow";
     c.fill();
@@ -54,6 +54,15 @@ document.addEventListener("DOMContentLoaded", function () {
     c.fillRect(paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
   }
 
+  function startState() {
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    c.font = "70px Arial";
+    c.fillText("Click anywhere to start", innerWidth / 2, innerHeight / 2);
+  }
+
+  if (startState()) {
+    animate() = false;
+  }
 
   //Create bricks array
   let bricks = [];
@@ -100,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (score === brickCols * brickRows) {
           c.clearRect(0, 0, innerWidth, innerHeight);
+          c.font = "70px Arial";
           c.fillText("You win!", innerWidth / 2, innerHeight / 2);
           animate() = false;
         }
@@ -109,6 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function scoreBoard() {
+    c.fillStyle = "black";
+    c.font = "15px Arial";
     c.fillText(`Score: ${score}`, 20, 25, 200);
   }
 
@@ -123,9 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
     brickCollision();
 
 
-
-
-
     if (x + radius > innerWidth || x - radius < 0) {
       dx = -dx;
     }
@@ -137,11 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
         dy = -dy;
       } else {
         livesCount--;
+        console.log(livesCount);
       }
-      if (livesCount === 0) {
-        console.log("Game over!");
-        document.location.reload();
-      }
+    }
+    if (livesCount === 0) {
+      console.log("Game over!");
+      document.location.reload();
     }
 
     x += dx;
@@ -188,8 +198,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
+  startState();
   setInterval(animate, 10);
 
-  animate();
+
+
 });

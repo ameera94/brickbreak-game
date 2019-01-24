@@ -6,7 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const c = canvas.getContext('2d');
 
+
   //===Paddle variables===
+
+  let paddleimg = document.getElementById("playpaddle");
+  let brickimg = document.getElementById("brickimg");
 
   let paddleHeight = 20;
   let paddleWidth = 300;
@@ -52,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function createPaddle() {
     c.beginPath();
     c.fillStyle = "orange";
-    c.fillRect(paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
+    // c.fillRect(paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
+    c.drawImage(paddleimg, paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
   }
 
   function startState() {
@@ -96,14 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
           let brickY = (r * (brickHeight + brickPadding)) + brickTop;
           bricks[col][r].x = brickX;
           bricks[col][r].y = brickY;
-
           c.beginPath();
-          if (col % 2 === 0) {
-            c.fillStyle = "#D33300";
-          } else {
-            c.fillStyle = "#F78A6B";
-          }
-          c.fillRect(brickX, brickY, brickWidth, brickHeight);
+          c.fillStyle = "#D33300";
+          c.drawImage(brickimg, brickX, brickY, brickWidth, brickHeight)
+          // c.fillRect(brickX, brickY, brickWidth, brickHeight);
         }
       }
     }

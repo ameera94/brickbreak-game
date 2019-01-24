@@ -6,3 +6,11 @@ canvas {
 body {
   margin: 0;
 }
+
+#playpaddle {
+  display: none;
+}
+
+#brickimg {
+  display: none;
+}

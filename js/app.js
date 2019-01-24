@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let brickTop = 5;
   let brickLeft = 100;
 
+  // c.fillStyle = "url("img\wall.jfif")";
 
   //===Ball function===
 
@@ -56,13 +57,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function startState() {
     c.clearRect(0, 0, innerWidth, innerHeight);
-    c.font = "70px Arial";
-    c.fillText("Click anywhere to start", innerWidth / 2, innerHeight / 2);
+    c.font = "50px Arial";
+    c.fillText("Click anywhere to start", innerWidth / 3, innerHeight / 2);
   }
 
   if (startState()) {
     animate() = false;
+    setInterval(animate, 10) = false;
+
   }
+
+
+  canvas.addEventListener("click", function (e) {
+
+    animate();
+    setInterval(animate, 10);
+
+  });
 
   //Create bricks array
   let bricks = [];
@@ -72,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
       bricks[col][r] = { x: 0, y: 0, value: 1 };
     }
   }
+
 
 
   //===Create bricks===
@@ -129,12 +141,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function animate() {
     c.clearRect(0, 0, innerWidth, innerHeight);
     scoreBoard();
+    livesBoard();
     createBricks();
     createBall();
     createPaddle();
     brickCollision();
 
 
+    function wallCollisions() {
+
+    }
     if (x + radius > innerWidth || x - radius < 0) {
       dx = -dx;
     }
@@ -144,13 +160,20 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (y + radius + (paddleHeight + 20) > innerHeight) {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy = -dy;
-      } else {
-        livesCount--;
-        console.log(livesCount);
+      } else if (y + radius > innerHeight) {
+        x = paddleX + (paddleWidth / 2);
+        dx = 3;
+        y = innerHeight - 55;
+        dy = 3;
+        paddleX = (innerWidth - paddleHeight) / 2;
+        livesCount -= 1;
+
       }
     }
     if (livesCount === 0) {
-      console.log("Game over!");
+      c.clearRect(0, 0, innerWidth, innerHeight);
+      c.font = "70px Arial";
+      c.fillText("You lose!", innerWidth / 2, innerHeight / 2);
       document.location.reload();
     }
 
@@ -159,6 +182,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+  function livesBoard() {
+    c.fillStyle = "black";
+    c.font = "15px Arial";
+    c.fillText(`Lives: ${livesCount}`, 1410, 25, 200);
+  }
 
 
 
@@ -199,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   startState();
-  setInterval(animate, 10);
+  // setInterval(animate, 10);
 
 
 

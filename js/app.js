@@ -38,7 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let brickPadding = 10;
   let brickTop = 5;
   let brickLeft = 100;
-  // let audio = new Audio('img\8d82b5_SMW_Kick_Sound_Effect.mp3');
+  let hit = new Audio('img/8d82b5_SMW_Kick_Sound_Effect.mp3');
+  let loser = new Audio('img/fail-trombone-01.mp3');
+  let winner = new Audio('img/final-fantasy-vii-victory-fanfare-1.mp3');
 
 
   //===Ball function===
@@ -126,12 +128,14 @@ document.addEventListener("DOMContentLoaded", function () {
           dy = -dy;
           bricks[col][r].value--;
           score++;
-          // audio.play();
+          hit.play();
+
         }
         if (score === brickCols * brickRows) {
           c.clearRect(0, 0, innerWidth, innerHeight);
           c.font = "70px Impact";
           c.fillText("You win!", innerWidth / 2, innerHeight / 2);
+          winner.play();
           animate() = false;
         }
       }
@@ -180,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
       c.clearRect(0, 0, innerWidth, innerHeight);
       c.font = "70px Impact";
       c.fillText("You lose!  Click to retry.", innerWidth / 3.4, innerHeight / 2);
+      loser.play();
       canvas.addEventListener("click", function (e) {
         document.location.reload();
       });
@@ -235,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   startState();
-  // setInterval(animate, 10);
+
 
 
 

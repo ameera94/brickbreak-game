@@ -1,0 +1,16 @@
+canvas {
+  border: solid 1px black;
+  background-color: #C8D3D5;
+}
+
+body {
+  margin: 70;
+}
+
+#playpaddle {
+  display: none;
+}
+
+#brickimg {
+  display: none;
+}

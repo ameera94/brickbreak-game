@@ -31,23 +31,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let livesCount = 3;
 
   //===Brick variables===
-  let brickRows = 4;
+  let brickRows = 5;
   let brickCols = 10;
   let brickWidth = 120;
   let brickHeight = 30;
   let brickPadding = 10;
   let brickTop = 5;
   let brickLeft = 100;
+  // let audio = new Audio('img\8d82b5_SMW_Kick_Sound_Effect.mp3');
 
-  // c.fillStyle = "url("img\wall.jfif")";
 
   //===Ball function===
 
   function createBall() {
+
     c.beginPath();
-    //c.moveTo(innerHeight - 400, paddleX / 2);
     c.arc(x, y, radius, 0, Math.PI * 2, false);
-    c.fillStyle = "yellow";
+    c.fillStyle = "#6B0B0B";
     c.fill();
   }
 
@@ -55,15 +55,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function createPaddle() {
     c.beginPath();
-    c.fillStyle = "orange";
-    // c.fillRect(paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
     c.drawImage(paddleimg, paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
   }
 
   function startState() {
     c.clearRect(0, 0, innerWidth, innerHeight);
-    c.font = "50px Arial";
-    c.fillText("Click anywhere to start", innerWidth / 3, innerHeight / 2);
+    c.fillStyle = "#6B0B0B";
+    c.font = "100px Impact";
+    c.fillText("Brick Break", innerWidth / 3, innerHeight / 5);
+    c.font = "bold 30px Consolas";
+    c.fillText("Instructions", innerWidth / 2.4, innerHeight / 3);
+    c.font = "20px Consolas";
+    c.fillText("The aim of the game is simple. Break anything and everything in your path.", innerWidth / 4.1, innerHeight / 2.5);
+    c.fillText("Use the paddle to hit the ball where you want it to go and keep it from touching the bottom.", innerWidth / 5.2, innerHeight / 2.2);
+    c.fillText("Use the mouse or left and right key on the keypad to control the paddle.", innerWidth / 4.3, innerHeight / 2);
+    c.fillText("You have 3 lives.", innerWidth / 2.4, innerHeight / 1.8);
+    c.fillText("Good Luck!", innerWidth / 2.3, innerHeight / 1.65);
+    c.font = "25px Consolas";
+    c.fillText("Click anywhere to start", innerWidth / 2.7, innerHeight / 1.5);
   }
 
   if (startState()) {
@@ -102,9 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
           bricks[col][r].x = brickX;
           bricks[col][r].y = brickY;
           c.beginPath();
-          c.fillStyle = "#D33300";
           c.drawImage(brickimg, brickX, brickY, brickWidth, brickHeight)
-          // c.fillRect(brickX, brickY, brickWidth, brickHeight);
         }
       }
     }
@@ -119,10 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
           dy = -dy;
           bricks[col][r].value--;
           score++;
+          // audio.play();
         }
         if (score === brickCols * brickRows) {
           c.clearRect(0, 0, innerWidth, innerHeight);
-          c.font = "70px Arial";
+          c.font = "70px Impact";
           c.fillText("You win!", innerWidth / 2, innerHeight / 2);
           animate() = false;
         }
@@ -149,9 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
     brickCollision();
 
 
-    function wallCollisions() {
-
-    }
     if (x + radius > innerWidth || x - radius < 0) {
       dx = -dx;
     }
@@ -171,11 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       }
     }
-    if (livesCount === 0) {
+    if (livesCount <= 0) {
       c.clearRect(0, 0, innerWidth, innerHeight);
-      c.font = "70px Arial";
-      c.fillText("You lose!", innerWidth / 2, innerHeight / 2);
-      document.location.reload();
+      c.font = "70px Impact";
+      c.fillText("You lose!  Click to retry.", innerWidth / 3.4, innerHeight / 2);
+      canvas.addEventListener("click", function (e) {
+        document.location.reload();
+      });
     }
 
     x += dx;

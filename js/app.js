@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+
   const canvas = document.querySelector('canvas');
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
   const c = canvas.getContext('2d');
-
 
   //===Paddle variables===
 
@@ -42,11 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let loser = new Audio('img/fail-trombone-01.mp3');
   let winner = new Audio('img/final-fantasy-vii-victory-fanfare-1.mp3');
 
-
   //===Ball function===
 
   function createBall() {
-
     c.beginPath();
     c.arc(x, y, radius, 0, Math.PI * 2, false);
     c.fillStyle = "#6B0B0B";
@@ -59,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     c.beginPath();
     c.drawImage(paddleimg, paddleX, (innerHeight - paddleHeight - 25), paddleWidth, paddleHeight);
   }
+
+  //Start screen + instructions page
 
   function startState() {
     c.clearRect(0, 0, innerWidth, innerHeight);
@@ -80,15 +80,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (startState()) {
     animate() = false;
     setInterval(animate, 10) = false;
-
   }
 
-
   canvas.addEventListener("click", function (e) {
-
     animate();
     setInterval(animate, 10);
-
   });
 
   //Create bricks array
@@ -99,8 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bricks[col][r] = { x: 0, y: 0, value: 1 };
     }
   }
-
-
 
   //===Create bricks===
 
@@ -129,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
           bricks[col][r].value--;
           score++;
           hit.play();
-
         }
         if (score === brickCols * brickRows) {
           c.clearRect(0, 0, innerWidth, innerHeight);
@@ -142,14 +135,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
+  //Scoreboard
   function scoreBoard() {
     c.fillStyle = "black";
     c.font = "15px Arial";
     c.fillText(`Score: ${score}`, 20, 25, 200);
   }
 
-  //===Animate all  function===
+  //===Animate all functions===
 
   function animate() {
     c.clearRect(0, 0, innerWidth, innerHeight);
@@ -177,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dy = 3;
         paddleX = (innerWidth - paddleHeight) / 2;
         livesCount -= 1;
-
       }
     }
     if (livesCount <= 0) {
@@ -189,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.location.reload();
       });
     }
-
     x += dx;
     y += dy;
 
@@ -198,10 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function livesBoard() {
     c.fillStyle = "black";
     c.font = "15px Arial";
-    c.fillText(`Lives: ${livesCount}`, 1410, 25, 200);
+    c.fillText(`Lives: ${livesCount}`, 20, 45, 200);
   }
-
-
 
   //===Keyboard controls function===
 
@@ -240,8 +229,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   startState();
-
-
-
 
 });

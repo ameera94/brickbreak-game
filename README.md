@@ -12,4 +12,5 @@ You have 3 lives.
 Good luck! 
 
 Implementation
+
 This game was created using HTML (Canvas), CSS and JavaScript. 

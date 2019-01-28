@@ -2,7 +2,7 @@
 
 A classic brick break game designed by Amira Shah. 
 
-Link to Game: 
+Link to Game: https://ameera94.github.io/brickbreak-game/
 
 Instructions
 
